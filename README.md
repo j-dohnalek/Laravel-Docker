@@ -102,3 +102,7 @@ Version (in PHP container): 18
 "digital envelope routines::unsupported ... ERR_OSSL_EVP_UNSUPPORTED" [duplicate]"
 
 https://stackoverflow.com/questions/69665222
+
+"AssertionError [ERR_ASSERTION]: mix.js() is missing required parameter 1: entry"
+
+https://nono.ma/assertionerror-mix-js-is-missing-required-parameter-1-entry
