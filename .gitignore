@@ -1,0 +1,4 @@
+.env
+deploy/mysql/data/*
+deploy/redis/data/*
+www/*

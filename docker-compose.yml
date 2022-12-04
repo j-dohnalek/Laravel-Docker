@@ -1,0 +1,84 @@
+version: "3"
+services:
+  # PHP 8
+  common_php8:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: common_php8/latest
+    container_name: common_php8
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: common_php8
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./www:/var/www
+      - ./deploy/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - common_network
+
+  # Nginx Service
+  common_nginx:
+    image: nginx:alpine
+    container_name: common_nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8080:80"
+      - "4443:443"
+    volumes:
+      - ./www:/var/www
+      - ./deploy/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - common_network
+
+  # Node JS Service
+  common_node_alpine:
+    image: node:alpine
+    container_name: common_node_alp
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./www:/var/www
+    networks:
+      - common_network
+
+  # MySQL Services
+  common_mysql8:
+    image: mysql:8.0
+    container_name: common_mysql8
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./deploy/mysql/data:/var/lib/mysql/
+      - ./deploy/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - common_network
+
+  # Redis Service
+  common_redis:
+    image: redis:alpine
+    container_name: common_redis
+    restart: unless-stopped
+    tty: true
+    command: redis-server
+    ports:
+      - "6379:6379"
+    networks:
+      - common_network
+    volumes:
+      - ./deploy/redis/data:/data
+
+# Docker Networks
+networks:
+  common_network:
+    driver: bridge
