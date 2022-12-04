@@ -96,3 +96,9 @@ Version: redis:alpine
 ### Node JS
 
 Version (in PHP container): 18
+
+# Resources
+
+"digital envelope routines::unsupported ... ERR_OSSL_EVP_UNSUPPORTED" [duplicate]"
+
+https://stackoverflow.com/questions/69665222
